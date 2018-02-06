@@ -13,7 +13,7 @@ public class Reviews {
     @SerializedName("results")
     private List<ReviewsResult> results;
 
-    public Reviews(){
+    public Reviews() {
         this.results = new ArrayList<>();
     }
 

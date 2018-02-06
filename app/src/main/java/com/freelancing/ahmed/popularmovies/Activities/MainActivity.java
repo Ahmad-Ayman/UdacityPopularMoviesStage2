@@ -1,6 +1,5 @@
 package com.freelancing.ahmed.popularmovies.Activities;
 
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -8,11 +7,7 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.nfc.Tag;
 import android.os.AsyncTask;
-import android.os.Handler;
-import android.os.Parcelable;
-import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
@@ -21,7 +16,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -49,38 +43,32 @@ import java.net.URL;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
-    //    SharedPreferences preferences = getSharedPreferences("loginData", Context.MODE_PRIVATE);
-//    String channel = (preferences.getString("email", ""));
-    private int item_selection = 1;
+
+    private int item_selection_forSorting = 1;
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final int FAV_LOADER_ID = 0;
     private ProgressBar mLoadingIndicator;
     private TextView mErrorMsgDisplay;
     private FrameLayout parentview;
     private GridLayoutManager lLayout;
-    private MoviesAdapter rcAdapter;
-    int columns;
+    private MoviesAdapter moviesRecyclerViewAdapter;
     private MoviesCursorAdapter favAdapter;
     private RecyclerView rView;
     private SwipeRefreshLayout swiping;
-    private final String KEY_RECYCLER_STATE = "mainactivityRecyclerView";
-    private static Bundle mBundleRecyclerViewState;
-    private Parcelable mListState = null;
-    private int cond = 0;
+    private int conditionForLoadingRecyclerViewItems = 0;
     int lastFirstVisiblePosition;
-    private int channel;
+    private int channelVarForGettingSelectionOfSortingMovies;
     SharedPreferences pref;
     private ArrayList<Movies> mlist = new ArrayList<>();
 
-    // private ArrayList<Movies> rowListItem;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         parentview = (FrameLayout) findViewById(R.id.framingLayout);
         pref = getSharedPreferences("orderby", MODE_PRIVATE);
-        channel = (pref.getInt("selection", 1));
-        item_selection = channel;
+        channelVarForGettingSelectionOfSortingMovies = (pref.getInt("selection", 1));
+        item_selection_forSorting = channelVarForGettingSelectionOfSortingMovies;
 
         if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
             lLayout = new GridLayoutManager(MainActivity.this, 2);
@@ -91,23 +79,23 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         rView = (RecyclerView) findViewById(R.id.rv_movies);
         rView.setHasFixedSize(true);
         rView.setLayoutManager(lLayout);
-        rcAdapter = new MoviesAdapter(MainActivity.this, mlist);
+        moviesRecyclerViewAdapter = new MoviesAdapter(MainActivity.this, mlist);
         favAdapter = new MoviesCursorAdapter(this);
-        if (channel == 3) {
+        if (channelVarForGettingSelectionOfSortingMovies == 3) {
             rView.setAdapter(favAdapter);
         } else {
-            rView.setAdapter(rcAdapter);
+            rView.setAdapter(moviesRecyclerViewAdapter);
 
         }
         registerForContextMenu(rView);
         mLoadingIndicator = (ProgressBar) findViewById(R.id.pb_loading_indicator);
         swiping = (SwipeRefreshLayout) findViewById(R.id.swiperefresh);
         mErrorMsgDisplay = findViewById(R.id.errormsg);
-        if (channel == 1) {
+        if (channelVarForGettingSelectionOfSortingMovies == 1) {
             loadMoviesData(0);
-        } else if (channel == 2) {
+        } else if (channelVarForGettingSelectionOfSortingMovies == 2) {
             loadMoviesData(1);
-        } else if (channel == 3) {
+        } else if (channelVarForGettingSelectionOfSortingMovies == 3) {
             loadFavData();
         }
         swiping.setOnRefreshListener(
@@ -115,19 +103,18 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                     @Override
                     public void onRefresh() {
                         if (isConnectedToInternet()) {
-                            rcAdapter.setMoviesData(null);
+                            moviesRecyclerViewAdapter.setMoviesData(null);
                             favAdapter.setMoviesFavData(null);
-                            if (item_selection == 1) {
+                            if (item_selection_forSorting == 1) {
                                 loadMoviesData(0);
-                            } else if (item_selection == 2) {
+                            } else if (item_selection_forSorting == 2) {
                                 loadMoviesData(1);
-                            } else if (item_selection == 3) {
+                            } else if (item_selection_forSorting == 3) {
                                 reloadFavData();
                             }
                         } else {
                             showNoInternetSnackBar();
                         }
-                        // loadMoviesData(conditionforrefresh); // should be according to shared pref value
                         swiping.setRefreshing(false);
                     }
                 }
@@ -138,38 +125,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     protected void onPause() {
         super.onPause();
         lastFirstVisiblePosition = ((GridLayoutManager) rView.getLayoutManager()).findFirstCompletelyVisibleItemPosition();
-//        mBundleRecyclerViewState = new Bundle();
-//        mListState = rView.getLayoutManager().onSaveInstanceState();
-//        mBundleRecyclerViewState.putParcelable(KEY_RECYCLER_STATE, mListState);
-    }
 
-//    @Override
-//    public void onConfigurationChanged(Configuration newConfig) {
-//        super.onConfigurationChanged(newConfig);
-//        columns = 2;
-//
-//        if (mBundleRecyclerViewState != null) {
-//            new Handler().postDelayed(new Runnable() {
-//
-//                @Override
-//                public void run() {
-//                    mListState = mBundleRecyclerViewState.getParcelable(KEY_RECYCLER_STATE);
-//                    rView.getLayoutManager().onRestoreInstanceState(mListState);
-//
-//                }
-//            }, 50);
-//        }
-//        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-//
-//            lLayout.setSpanCount(columns);
-//
-//        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
-//
-//            lLayout.setSpanCount(columns);
-//
-//        }
-//        rView.setLayoutManager(lLayout);
-//    }
+    }
 
     private void reloadFavData() {
         setTitle("Favorited Movies");
@@ -187,12 +144,12 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private void loadMoviesData(int condition) {
         if (condition == 0) {
             setTitle("Most Popular Movies");
-            cond = 0;
+            conditionForLoadingRecyclerViewItems = 0;
         } else if (condition == 1) {
             setTitle("Top Rated Movies");
-            cond = 1;
+            conditionForLoadingRecyclerViewItems = 1;
         }
-        rView.setAdapter(rcAdapter);
+        rView.setAdapter(moviesRecyclerViewAdapter);
         showMoviesDataView();
         new MoviesAsyncTask().execute(mlist);
 
@@ -231,13 +188,13 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                     public void onClick(View view) {
 
                         if (isConnectedToInternet()) {
-                            if (item_selection == 1) {
+                            if (item_selection_forSorting == 1) {
                                 loadMoviesData(0);
 
-                            } else if (item_selection == 2) {
+                            } else if (item_selection_forSorting == 2) {
                                 loadMoviesData(1);
 
-                            } else if (item_selection == 3) {
+                            } else if (item_selection_forSorting == 3) {
                                 reloadFavData();
                             }
                         } else {
@@ -252,7 +209,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         return new AsyncTaskLoader<Cursor>(this) {
 
-            // Initialize a Cursor, this will hold all the task data
+            // Initialize a Cursor, this will hold all the Movies data
             Cursor mMoviesFavData = null;
 
             @Override
@@ -305,7 +262,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     protected void onResume() {
         super.onResume();
-        if (item_selection == 3) {
+        if (item_selection_forSorting == 3) {
             reloadFavData();
         }
         ((GridLayoutManager) rView.getLayoutManager()).scrollToPosition(lastFirstVisiblePosition);
@@ -315,7 +272,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (item_selection == 3) {
+        if (item_selection_forSorting == 3) {
             reloadFavData();
         }
         lastFirstVisiblePosition = ((GridLayoutManager) rView.getLayoutManager()).findFirstCompletelyVisibleItemPosition();
@@ -332,9 +289,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         protected ArrayList<Movies> doInBackground(ArrayList<Movies>[] lists) {
 
             URL MoviesRequestUrl = null;
-            if (cond == 0) {
+            if (conditionForLoadingRecyclerViewItems == 0) {
                 MoviesRequestUrl = NetworkUtils.buildUrl(0);
-            } else if (cond == 1) {
+            } else if (conditionForLoadingRecyclerViewItems == 1) {
                 MoviesRequestUrl = NetworkUtils.buildUrl(1);
             }
             String[] result = null;
@@ -356,14 +313,12 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             mLoadingIndicator.setVisibility(View.INVISIBLE);
             if (movies != null) {
                 showMoviesDataView();
-                rcAdapter.setMoviesData(movies);
+                moviesRecyclerViewAdapter.setMoviesData(movies);
             } else {
                 showErrorMessage();
             }
         }
-        /** @Override protected void onPostExecute(List strings) {
 
-        } **/
     }
 
 
@@ -390,7 +345,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             final boolean isConnected = activeNetwork != null &&
                     activeNetwork.isConnectedOrConnecting();
             if (isConnected == false) {
-                // Toast.makeText(this, "Please Check internet Connection", Toast.LENGTH_SHORT).show();
                 showNoInternetSnackBar();
             } else {
                 registerForContextMenu(getCurrentFocus());
@@ -410,11 +364,11 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         MenuItem item_popular = menu.findItem(R.id.pop);
         MenuItem item_fav = menu.findItem(R.id.fav);
         MenuItem item_toprated = menu.findItem(R.id.top_rated);
-        if (item_selection == 1) {
+        if (item_selection_forSorting == 1) {
             item_popular.setChecked(true);
-        } else if (item_selection == 2) {
+        } else if (item_selection_forSorting == 2) {
             item_toprated.setChecked(true);
-        } else if (item_selection == 3) {
+        } else if (item_selection_forSorting == 3) {
             item_fav.setChecked(true);
         }
     }
@@ -424,7 +378,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         int id = item.getItemId();
         switch (id) {
             case R.id.pop:
-                rcAdapter.setMoviesData(null);
+                moviesRecyclerViewAdapter.setMoviesData(null);
                 favAdapter.swapCursor(null);
                 rView.getRecycledViewPool().clear();
                 loadMoviesData(0);
@@ -432,12 +386,12 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 SharedPreferences.Editor editor = pref.edit();
                 Toast.makeText(this, "Sorted By Popular", Toast.LENGTH_SHORT).show();
                 item.setChecked(true);
-                item_selection = 1;
-                editor.putInt("selection", item_selection);
+                item_selection_forSorting = 1;
+                editor.putInt("selection", item_selection_forSorting);
                 editor.apply();
                 return true;
             case R.id.top_rated:
-                rcAdapter.setMoviesData(null);
+                moviesRecyclerViewAdapter.setMoviesData(null);
                 favAdapter.swapCursor(null);
                 rView.getRecycledViewPool().clear();
                 loadMoviesData(1);
@@ -446,12 +400,12 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 editor.putInt("sort", 1);
                 Toast.makeText(this, "Sorted By Top Rated", Toast.LENGTH_SHORT).show();
                 item.setChecked(true);
-                item_selection = 2;
-                editor.putInt("selection", item_selection);
+                item_selection_forSorting = 2;
+                editor.putInt("selection", item_selection_forSorting);
                 editor.apply();
                 return true;
             case R.id.fav:
-                rcAdapter.setMoviesData(null);
+                moviesRecyclerViewAdapter.setMoviesData(null);
                 favAdapter.swapCursor(null);
                 rView.getRecycledViewPool().clear();
                 loadFavData();
@@ -460,8 +414,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 editor.putInt("sort", 2);
                 Toast.makeText(this, "Sorted By Fav", Toast.LENGTH_SHORT).show();
                 item.setChecked(true);
-                item_selection = 3;
-                editor.putInt("selection", item_selection);
+                item_selection_forSorting = 3;
+                editor.putInt("selection", item_selection_forSorting);
                 editor.apply();
                 return true;
 

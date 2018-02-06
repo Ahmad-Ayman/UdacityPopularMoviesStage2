@@ -21,14 +21,14 @@ import java.util.List;
 public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewsAdapterViewHolder> {
     private Context mContext;
     int ID;
-    String author;
-    String content;
+    private String author;
+    private String content;
 
     List<Reviews.ReviewsResult> reviews;
 
-    public ReviewsAdapter(Context context,List<Reviews.ReviewsResult> rList){
-        mContext=context;
-        reviews=rList;
+    public ReviewsAdapter(Context context, List<Reviews.ReviewsResult> rList) {
+        mContext = context;
+        reviews = rList;
     }
 
 
@@ -36,11 +36,9 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewsA
     public class ReviewsAdapterViewHolder extends RecyclerView.ViewHolder {
         public TextView mReviewAuthor;
         public TextView mReviewContent;
-        private ItemClickListener itemClickListener;
 
         public ReviewsAdapterViewHolder(View view) {
             super(view);
-            // view.setOnClickListener(this);
             mReviewAuthor = (TextView) view.findViewById(R.id.tv_author);
             mReviewContent = (TextView) view.findViewById(R.id.tv_content);
 
@@ -58,23 +56,22 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewsA
 
     @Override
     public void onBindViewHolder(ReviewsAdapter.ReviewsAdapterViewHolder holder, int position) {
-        //Movies Movies = movies.get(position);
 
         author = reviews.get(position).getmAuthor();
         content = reviews.get(position).getmContent();
 
-            holder.mReviewAuthor.setText(author);
-            holder.mReviewContent.setText(content);
+        holder.mReviewAuthor.setText(author);
+        holder.mReviewContent.setText(content);
 
     }
 
     @Override
-    public int getItemCount()
-    {
+    public int getItemCount() {
         if (null == reviews)
             return 0;
         return reviews.size();
     }
+
     public void setReviewsData(List<Reviews.ReviewsResult> ReviewsData) {
 
         reviews = ReviewsData; // mMovies is a string Array

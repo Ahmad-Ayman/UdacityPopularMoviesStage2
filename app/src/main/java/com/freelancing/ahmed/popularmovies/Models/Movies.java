@@ -17,22 +17,22 @@ public class Movies {
     private String mReleaseDate;
     private String mBackPoster;
 
-    public Movies( int iD,
-                   int voteCounter,
-            double voteavg,
-            String posterPath,
-            String title,
-            String overview,
-            String releaseDate,
-             String BackPoster){
-        mID=iD;
-        mVoteCounter=voteCounter;
+    public Movies(int iD,
+                  int voteCounter,
+                  double voteavg,
+                  String posterPath,
+                  String title,
+                  String overview,
+                  String releaseDate,
+                  String BackPoster) {
+        mID = iD;
+        mVoteCounter = voteCounter;
         mVoteavg = voteavg;
         mPosterPath = posterPath;
-        mTitle=title;
-        mOverview=overview;
-        mReleaseDate=releaseDate;
-        mBackPoster=BackPoster;
+        mTitle = title;
+        mOverview = overview;
+        mReleaseDate = releaseDate;
+        mBackPoster = BackPoster;
     }
 
     public int getmID() {
@@ -63,7 +63,9 @@ public class Movies {
         return mReleaseDate;
     }
 
-    public String getmBackPoster() {return mBackPoster;}
+    public String getmBackPoster() {
+        return mBackPoster;
+    }
 
 
 }

@@ -31,11 +31,11 @@ import java.util.ArrayList;
  */
 public class MoviesCursorAdapter extends RecyclerView.Adapter<MoviesCursorAdapter.MoviesFavViewHolder> {
 
-    // Class variables for the Cursor that holds task data and the Context
+    // Class variables for the Cursor that holds Movies data and the Context
     private Cursor mCursor;
     private Context mContext;
 
-    private int ID,dbRowID;
+    private int ID, dbRowID;
     private String pic;
     private int votecounter;
     private double voteavg;
@@ -52,27 +52,16 @@ public class MoviesCursorAdapter extends RecyclerView.Adapter<MoviesCursorAdapte
     public int moviesOvIndex;
     public int moviesReleaseIndex;
     public int moviesBackPosterIndex;
-    final static String BASE_POSTER_URL="http://image.tmdb.org/t/p/w185";
+    final static String BASE_POSTER_URL = "http://image.tmdb.org/t/p/w185";
 
-    /**
-     * Constructor for the CustomCursorAdapter that initializes the Context.
-     *
-     * @param mContext the current Context
-     */
     public MoviesCursorAdapter(Context mContext) {
         this.mContext = mContext;
     }
 
 
-    /**
-     * Called when ViewHolders are created to fill a RecyclerView.
-     *
-     * @return A new TaskViewHolder that holds the view for each task
-     */
     @Override
     public MoviesFavViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        // Inflate the task_layout to a view
         View view = LayoutInflater.from(mContext)
                 .inflate(R.layout.movies_list_item, parent, false);
 
@@ -80,17 +69,10 @@ public class MoviesCursorAdapter extends RecyclerView.Adapter<MoviesCursorAdapte
     }
 
 
-    /**
-     * Called by the RecyclerView to display data at a specified position in the Cursor.
-     *
-     * @param holder The ViewHolder to bind Cursor data to
-     * @param position The position of the data in the Cursor
-     */
     @Override
     public void onBindViewHolder(MoviesFavViewHolder holder, int position) {
 
-        // Indices for the _id, description, and priority columns
-        idRowDbIndex= mCursor.getColumnIndex(MoviesAppContract.MoviesEntry._ID);
+        idRowDbIndex = mCursor.getColumnIndex(MoviesAppContract.MoviesEntry._ID);
         titleIndex = mCursor.getColumnIndex(MoviesAppContract.MoviesEntry.COLUMN_MOVIE_NAME);
         moviesIdIndex = mCursor.getColumnIndex(MoviesAppContract.MoviesEntry.COLUMN_MOVIES_ID);
         moviesOvIndex = mCursor.getColumnIndex(MoviesAppContract.MoviesEntry.COLUMN_MOVIES_OVERVIEWS);
@@ -98,7 +80,7 @@ public class MoviesCursorAdapter extends RecyclerView.Adapter<MoviesCursorAdapte
         moviesAvgIndex = mCursor.getColumnIndex(MoviesAppContract.MoviesEntry.COLUMN_MOVIES_RATE);
         moviesReleaseIndex = mCursor.getColumnIndex(MoviesAppContract.MoviesEntry.COLUMN_MOVIES_RELEASE_DATE);
         moviesPosterIndex = mCursor.getColumnIndex(MoviesAppContract.MoviesEntry.COLUMN_MOVIE_POSTER);
-        moviesBackPosterIndex =mCursor.getColumnIndex(MoviesAppContract.MoviesEntry.COLUMN_MOVIES_BACK_POSTER);
+        moviesBackPosterIndex = mCursor.getColumnIndex(MoviesAppContract.MoviesEntry.COLUMN_MOVIES_BACK_POSTER);
 
 
         mCursor.moveToPosition(position); // get to the right location in the cursor
@@ -108,7 +90,7 @@ public class MoviesCursorAdapter extends RecyclerView.Adapter<MoviesCursorAdapte
         String poster = mCursor.getString(moviesPosterIndex);
         //Set values
         holder.itemView.setTag(id);
-        String urlpic = BASE_POSTER_URL+poster;
+        String urlpic = BASE_POSTER_URL + poster;
         Picasso.with(mContext).load(urlpic).into(holder.mMoviesPoster);
         pic = mCursor.getString(moviesPosterIndex);
 
@@ -118,52 +100,47 @@ public class MoviesCursorAdapter extends RecyclerView.Adapter<MoviesCursorAdapte
 
                 mCursor.moveToPosition(pos);
                 ID = mCursor.getInt(moviesIdIndex);
-                Log.e("Movie Id from cursor",String.valueOf(ID));
-                votecounter=mCursor.getInt(moviesCounterIndex);
-                voteavg=mCursor.getDouble(moviesAvgIndex);
-                title=mCursor.getString(titleIndex);
-                overview=mCursor.getString(moviesOvIndex);
+                Log.e("Movie Id from cursor", String.valueOf(ID));
+                votecounter = mCursor.getInt(moviesCounterIndex);
+                voteavg = mCursor.getDouble(moviesAvgIndex);
+                title = mCursor.getString(titleIndex);
+                overview = mCursor.getString(moviesOvIndex);
                 releaseDate = mCursor.getString(moviesReleaseIndex);
-                backposter=mCursor.getString(moviesBackPosterIndex);
-                pic=mCursor.getString(moviesPosterIndex);
-                dbRowID=mCursor.getInt(idRowDbIndex);
+                backposter = mCursor.getString(moviesBackPosterIndex);
+                pic = mCursor.getString(moviesPosterIndex);
+                dbRowID = mCursor.getInt(idRowDbIndex);
 
 
-                Intent i = new Intent(mContext,DetailsActivity.class);
-                i.putExtra("ID_KEY",ID);
-                Log.e("Movie Id to sent",String.valueOf(ID));
-                i.putExtra("PIC_KEY",pic);
-                i.putExtra("VOTECOUNTER_KEY",votecounter);
-                i.putExtra("VOTEAVG_KEY",voteavg);
-                i.putExtra("TITLE_KEY",title);
-                i.putExtra("OVERVIEW_KEY",overview);
-                i.putExtra("RELEASE_KEY",releaseDate);
-                i.putExtra("BACKPOSTER_KEY",backposter);
-                i.putExtra("POSTER_KEY",pic);
-                i.putExtra("ROW_ID_KEY",dbRowID);
-                i.putExtra("Uniqid","From_CursorAdapter");
+                Intent i = new Intent(mContext, DetailsActivity.class);
+                i.putExtra("ID_KEY", ID);
+                Log.e("Movie Id to sent", String.valueOf(ID));
+                i.putExtra("PIC_KEY", pic);
+                i.putExtra("VOTECOUNTER_KEY", votecounter);
+                i.putExtra("VOTEAVG_KEY", voteavg);
+                i.putExtra("TITLE_KEY", title);
+                i.putExtra("OVERVIEW_KEY", overview);
+                i.putExtra("RELEASE_KEY", releaseDate);
+                i.putExtra("BACKPOSTER_KEY", backposter);
+                i.putExtra("POSTER_KEY", pic);
+                i.putExtra("ROW_ID_KEY", dbRowID);
+                i.putExtra("Uniqid", "From_CursorAdapter");
 
                 //open activity
                 mContext.startActivity(i);
             }
 
-            @Override
-            public void onLongClick(View view, int position) {
-
-            }
         });
     }
 
-    /**
-     * Returns the number of items to display.
-     */
+
     @Override
     public int getItemCount() {
-        if (null==mCursor) {
+        if (null == mCursor) {
             return 0;
         }
         return mCursor.getCount();
     }
+
     public Cursor swapCursor(Cursor c) {
         // check if this cursor is the same as the previous cursor (mCursor)
         if (mCursor == c) {
@@ -178,13 +155,15 @@ public class MoviesCursorAdapter extends RecyclerView.Adapter<MoviesCursorAdapte
         }
         return temp;
     }
+
     public void setMoviesFavData(Cursor moviesDataCursor) {
 
         mCursor = moviesDataCursor; // mMovies is a string Array
         notifyDataSetChanged();
     }
-///////////////////////////////////////////////////////
-    public class MoviesFavViewHolder extends RecyclerView.ViewHolder  implements View.OnClickListener {
+
+    ///////////////////////////////////////////////////////
+    public class MoviesFavViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         public ImageView mMoviesPoster;
         private ItemClickListener itemClickListener;
@@ -197,10 +176,11 @@ public class MoviesCursorAdapter extends RecyclerView.Adapter<MoviesCursorAdapte
 
         @Override
         public void onClick(View v) {
-            this.itemClickListener.onItemClick(v,getLayoutPosition());
+            this.itemClickListener.onItemClick(v, getLayoutPosition());
         }
-        public void setItemClickListener(ItemClickListener ic){
-            this.itemClickListener=ic;
+
+        public void setItemClickListener(ItemClickListener ic) {
+            this.itemClickListener = ic;
         }
     }
     ///////////////////////////////////////////////////

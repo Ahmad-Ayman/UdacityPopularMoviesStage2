@@ -13,13 +13,14 @@ public class Videos {
     @SerializedName("results")
     private List<Videos.VideosResult> results;
 
-    public Videos(){
+    public Videos() {
         this.results = new ArrayList<>();
     }
 
     public List<Videos.VideosResult> getResults() {
         return results;
     }
+
     public class VideosResult {
         @SerializedName("id")
         private String mID;

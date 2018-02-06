@@ -8,15 +8,12 @@
     tools:context="com.freelancing.ahmed.popularmovies.Activities.SplashActivity">
 
     <ImageView
+        android:id="@+id/splash_logo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/download"
-        android:padding="@dimen/sixteendp"
         android:layout_centerInParent="true"
-        android:id="@+id/splash_logo"
-        />
-
-
+        android:padding="@dimen/sixteendp"
+        android:src="@drawable/download" />
 
 
 </RelativeLayout>

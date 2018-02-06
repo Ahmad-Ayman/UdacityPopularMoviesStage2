@@ -26,15 +26,15 @@ import java.util.List;
 public class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.VideosAdapterViewHolder> {
     private Context mContext;
     int ID;
-    String key;
-    String name;
+    private String key;
+    private String name;
     List<Videos.VideosResult> videos;
-    private static final String YOUTUBE_URL ="https://www.youtube.com/watch";
-    private static final String YOUTUBE_QUERY_PARAM ="v";
+    private static final String YOUTUBE_URL = "https://www.youtube.com/watch";
+    private static final String YOUTUBE_QUERY_PARAM = "v";
 
-    public VideosAdapter(Context context ,List<Videos.VideosResult> vList){
-        mContext=context;
-        videos=vList;
+    public VideosAdapter(Context context, List<Videos.VideosResult> vList) {
+        mContext = context;
+        videos = vList;
     }
 
     //////////////////////////////////////// View Holder Class //////////////////////////
@@ -44,17 +44,17 @@ public class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.VideosAdap
 
         public VideosAdapterViewHolder(View itemView) {
             super(itemView);
-            // view.setOnClickListener(this);
             mVideoName = (TextView) itemView.findViewById(R.id.video_name);
             itemView.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View view) {
-            this.itemClickListener.onItemClick(view,getLayoutPosition());
+            this.itemClickListener.onItemClick(view, getLayoutPosition());
         }
-        public void setItemClickListener(ItemClickListener ic){
-            this.itemClickListener=ic;
+
+        public void setItemClickListener(ItemClickListener ic) {
+            this.itemClickListener = ic;
         }
     }
     //////////////////////////////////////// View Holder Class //////////////////////////
@@ -71,11 +71,10 @@ public class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.VideosAdap
         name = videos.get(position).getmName();
         key = videos.get(position).getmKey();
         holder.mVideoName.setText(name);
-       // holder.mReviewContent.setText(content);
         holder.setItemClickListener(new ItemClickListener() {
             @Override
             public void onItemClick(View v, int pos) {
-               key = videos.get(pos).getmKey();
+                key = videos.get(pos).getmKey();
                 Toast.makeText(mContext, "Link Pressed", Toast.LENGTH_SHORT).show();
                 String url = buildYoutubeURL(key).toString();
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
@@ -86,10 +85,6 @@ public class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.VideosAdap
 
             }
 
-            @Override
-            public void onLongClick(View view, int position) {
-
-            }
         });
     }
 
@@ -99,14 +94,15 @@ public class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.VideosAdap
             return 0;
         return videos.size();
     }
+
     public void setVideosData(List<Videos.VideosResult> VideosData) {
 
         videos = VideosData;
         notifyDataSetChanged();
     }
 
-    private URL buildYoutubeURL (String key){
-        Uri uri=null;
+    private URL buildYoutubeURL(String key) {
+        Uri uri = null;
         URL url = null;
         uri = Uri.parse(YOUTUBE_URL).buildUpon()
                 .appendQueryParameter(YOUTUBE_QUERY_PARAM, key)

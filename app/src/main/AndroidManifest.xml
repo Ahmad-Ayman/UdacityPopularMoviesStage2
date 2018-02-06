@@ -7,7 +7,7 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/download"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true">
@@ -22,22 +22,22 @@
         </activity>
         <activity
             android:name=".Activities.MainActivity"
-            android:theme="@style/AppTheme"
-            android:configChanges="orientation|screenSize"/>
+            android:configChanges="orientation|screenSize"
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".Activities.DetailsActivity"
-            android:theme="@style/AppTheme"
             android:parentActivityName="com.freelancing.ahmed.popularmovies.Activities.MainActivity"
-            >
+            android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.freelancing.ahmed.popularmovies.Activities.MainActivity" />
 
         </activity>
+
         <provider
-            android:authorities="com.freelancing.ahmed.popularmovies"
             android:name="com.freelancing.ahmed.popularmovies.data.MoviesContentProvider"
-            android:exported="false"/>
+            android:authorities="com.freelancing.ahmed.popularmovies"
+            android:exported="false" />
     </application>
 
 </manifest>

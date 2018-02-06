@@ -47,10 +47,10 @@ public class DetailsActivity extends AppCompatActivity {
     private LinearLayoutManager lLayout, l2Layout;
     private ReviewsAdapter rcAdapter;
     private VideosAdapter videosAdapter;
-    View divider;
-    ImageView backimg;
-    String idpass;
-    ScrollView parentview;
+    private View divider;
+    private ImageView backimg;
+    private String idpass;
+    private ScrollView parentview;
     private ProgressBar mLoadingIndicatorReviews;
     private ProgressBar mLoadingIndicatorVideos;
     TextView error;
@@ -59,7 +59,6 @@ public class DetailsActivity extends AppCompatActivity {
     double avg;
     String tit, ov, releaseD, backposter, poster;
     int dbRowID;
-    String fromwhere;
     /////////////////////
     final static String API_KEY = BuildConfig.API_KEY;
     private ApiInterface apiInterface;
@@ -97,7 +96,6 @@ public class DetailsActivity extends AppCompatActivity {
         poster = i.getExtras().getString("POSTER_KEY");
         dbRowID = i.getExtras().getInt("ROW_ID_KEY");
 
-        //img = (ImageView) findViewById(R.id.iv_movie_detail);
         title = (TextView) findViewById(R.id.tv_movie_name_details);
         ratecount = (TextView) findViewById(R.id.tv_movie_totalvotes_details);
         rateavg = (TextView) findViewById(R.id.tv_movie_avgrate_details);
@@ -119,12 +117,9 @@ public class DetailsActivity extends AppCompatActivity {
         text3.setTypeface(font);
         text4.setTypeface(font);
         text5.setTypeface(font);
-        //String urlpic = BASE_POSTER_URL+pica;
-        //Picasso.with(this).load(urlpic).into(img);
+
         String backposterurl = BASE_POSTER_URL + backposter;
-        //backposter=backposter.substring(1);
-        //Uri imglinkBuilder = Uri.parse(BASE_POSTER_URL).buildUpon().appendPath(backposter).build();
-        //Log.e("img link builder: ",imglinkBuilder.toString());
+
         Log.e("img link from string", backposterurl);
         Picasso.with(this).load(backposterurl).fit()
                 .placeholder(R.drawable.noimage).centerCrop()
@@ -156,18 +151,6 @@ public class DetailsActivity extends AppCompatActivity {
                 new MaterialFavoriteButton.OnFavoriteChangeListener() {
                     @Override
                     public void onFavoriteChanged(MaterialFavoriteButton buttonView, boolean favorite) {
-                        //  Uri uriquery = MoviesAppContract.MoviesEntry.CONTENT_URI;
-//                    String stringId=idpass ;
-//                    Log.e("idpass= ",idpass);
-//                    Log.e("stringId =",stringId);
-//                    //uriquery = uriquery.buildUpon().appendPath(stringId).build();
-//                    Log.e("uriquery = ",uriquery.toString());
-//                    Cursor cr=getContentResolver().query(uriquery,
-//                            null,
-//                            MoviesAppContract.MoviesEntry.COLUMN_MOVIES_ID+"="+idpass,
-//                            null,
-//                            null);
-//
                         MoviesAppDbHelper mMoviesAppDbHelper = new MoviesAppDbHelper(getApplicationContext());
                         SQLiteDatabase db = mMoviesAppDbHelper.getReadableDatabase();
 
@@ -195,8 +178,6 @@ public class DetailsActivity extends AppCompatActivity {
                             Uri uri = MoviesAppContract.MoviesEntry.CONTENT_URI;
                             String stringIdDelete = idpass;
                             uri = uri.buildUpon().appendPath(stringIdDelete).build();
-                            //String where = MoviesAppContract.MoviesEntry.COLUMN_MOVIES_ID + " = " + idpass;
-//                        // COMPLETED (2) Delete a single row of data using a ContentResolver
                             getContentResolver().delete(uri, null, null);
 
                         }

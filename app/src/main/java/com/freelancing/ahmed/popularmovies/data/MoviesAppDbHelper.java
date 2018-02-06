@@ -19,6 +19,7 @@ public class MoviesAppDbHelper extends SQLiteOpenHelper {
     public MoviesAppDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
+
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         // Create a table to hold waitlist data
@@ -26,12 +27,12 @@ public class MoviesAppDbHelper extends SQLiteOpenHelper {
                 MoviesAppContract.MoviesEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                 MoviesAppContract.MoviesEntry.COLUMN_MOVIE_NAME + " TEXT NOT NULL, " +
                 MoviesAppContract.MoviesEntry.COLUMN_MOVIE_POSTER + " TEXT NOT NULL, " +
-                MoviesAppContract.MoviesEntry.COLUMN_MOVIES_BACK_POSTER + " TEXT NOT NULL, "+
-                MoviesAppContract.MoviesEntry.COLUMN_MOVIES_ID +" INTEGER NOT NULL, "+
-                MoviesAppContract.MoviesEntry.COLUMN_MOVIES_OVERVIEWS+ " TEXT NOT NULL, "+
-                MoviesAppContract.MoviesEntry.COLUMN_MOVIES_RATE+" REAL NOT NULL, "+
-                MoviesAppContract.MoviesEntry.COLUMN_MOVIES_TOTAL_VOTES+" INTEGER NOT NULL, "+
-                MoviesAppContract.MoviesEntry.COLUMN_MOVIES_RELEASE_DATE+" TEXT NOT NULL"+
+                MoviesAppContract.MoviesEntry.COLUMN_MOVIES_BACK_POSTER + " TEXT NOT NULL, " +
+                MoviesAppContract.MoviesEntry.COLUMN_MOVIES_ID + " INTEGER NOT NULL, " +
+                MoviesAppContract.MoviesEntry.COLUMN_MOVIES_OVERVIEWS + " TEXT NOT NULL, " +
+                MoviesAppContract.MoviesEntry.COLUMN_MOVIES_RATE + " REAL NOT NULL, " +
+                MoviesAppContract.MoviesEntry.COLUMN_MOVIES_TOTAL_VOTES + " INTEGER NOT NULL, " +
+                MoviesAppContract.MoviesEntry.COLUMN_MOVIES_RELEASE_DATE + " TEXT NOT NULL" +
                 "); ";
 
         sqLiteDatabase.execSQL(SQL_CREATE_MOVIES_TABLE);
