@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Popular Movies</string>
+    <string name="title">Title:&#32;</string>
+    <string name="hint">Avengers: Age of Ultron</string>
+    <string name="votes">Total Votes:&#32;</string>
+    <string name="numberhint">1000</string>
+    <string name="avg">Average Rating:&#32;</string>
+    <string name="ow">Overview:&#32;</string>
+    <string name="release">Release Date:&#32;</string>
+    <string name="errormsg">Error getting the data</string>
+    <string name="orderby">Order By</string>
+    <string name="mostpop">Most Popular</string>
+    <string name="toprate">Top Rated</string>
+</resources>

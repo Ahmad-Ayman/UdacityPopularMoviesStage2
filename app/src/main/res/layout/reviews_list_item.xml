@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    xmlns:tools="http://schemas.android.com/tools">
+
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+        <TextView
+            android:id="@+id/tvreviewer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Reviewer: "
+            android:textSize="16sp"
+            android:fontFamily="monospace"
+            android:textStyle="bold"
+            />
+        <TextView
+            android:id="@+id/tv_author"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Ahmed Ayman"
+            android:textSize="16sp"
+            android:fontFamily="monospace"
+            android:textStyle="bold"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:layout_toRightOf="@id/tvreviewer"
+            />
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:text="Ahmed Ayman"
+        android:layout_marginTop="16dp"
+        android:textSize="15sp"
+        android:paddingLeft="8dp"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_marginTop="16dp"
+        android:layout_gravity="center"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"
+        android:layout_marginBottom="24dp"/>
+
+
+
+
+
+
+
+</LinearLayout>
