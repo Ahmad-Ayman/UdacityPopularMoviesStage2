@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="eightdp">8dp</dimen>
+    <dimen name="sixteendp">16dp</dimen>
+    <dimen name="fourtytwodp">42dp</dimen>
+    <dimen name="twentysp">20sp</dimen>
+    <dimen name="twohunddp">200dp</dimen>
+    <dimen name="twentytwosp">22sp</dimen>
+    <dimen name="twentyfivesp">25sp</dimen>
+    <dimen name="twentythreesp">23sp</dimen>
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="activity_detail_linear_height">250dp</dimen>
+    <dimen name="fiftydp">50dp</dimen>
+    <dimen name="eighteensp">18sp</dimen>
+    <dimen name="tweentyfourdp">24dp</dimen>
+    <dimen name="ninteensp">19sp</dimen>
+    <dimen name="threehundraddp">300dp</dimen>
+    <dimen name="onedp">1dp</dimen>
+    <dimen name="seventeensp">17sp</dimen>
+    <dimen name="sixteensp">16sp</dimen>
+    <dimen name="fifteensp">15sp</dimen>
+</resources>
