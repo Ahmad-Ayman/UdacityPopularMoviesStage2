@@ -53,7 +53,7 @@ public class DetailsActivity extends AppCompatActivity {
     private ScrollView parentview;
     private ProgressBar mLoadingIndicatorReviews;
     private ProgressBar mLoadingIndicatorVideos;
-    TextView error;
+    private TextView error;
     // variables for data //////////////
     int id, counter;
     double avg;
@@ -62,8 +62,8 @@ public class DetailsActivity extends AppCompatActivity {
     /////////////////////
     final static String API_KEY = BuildConfig.API_KEY;
     private ApiInterface apiInterface;
-    TextView title, overview, ratecount, rateavg, releasedate;
-    TextView errorVideos;
+    private TextView title, overview, ratecount, rateavg, releasedate;
+    private TextView errorVideos;
     MaterialFavoriteButton favorite;
     final static String BASE_POSTER_URL = "http://image.tmdb.org/t/p/w780";
 
