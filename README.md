@@ -11,6 +11,11 @@
 
 This Screenshoots to show the reviews section for each movie, and also the probability that the movie does not have any reviews then it will show that there are no Reviews, Thank you :)
 
+# USED LIBRARIES 
+
+1- Picasso 
+2- Retrofit 2
+
 # APK File Download
 
 Download the APK file <b><a href="https://goo.gl/zvp9TD">FROM HERE.</a></b>
